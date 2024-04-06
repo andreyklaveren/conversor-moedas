@@ -1,19 +1,19 @@
 import { Header } from "./components/Header";
-import { CurrencyConverterForm } from "./components/form/CurrencyConverterForm";
-import bg from "./assets/bg.svg";
+import { CurrencyConverter } from "./components/form/CurrencyConverter";
+import bg from "./assets/Mask-min.webp";
+
 export function App() {
   return (
     <div
       className="p-16 bg-cover bg-right bg-no-repeat"
       style={{
-        backgroundImage: `url(${bg})`,
+        backgroundImage: `url(${bg})`, // Dolars backgroun image fixed
         height: "100vh",
         backgroundSize: "contain",
       }}
     >
       <Header />
-
-      <CurrencyConverterForm />
+      <CurrencyConverter />
     </div>
   );
 }
