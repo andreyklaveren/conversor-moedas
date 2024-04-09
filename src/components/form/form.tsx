@@ -5,51 +5,64 @@ import { InputRadio } from "./InputRadio";
 import { api } from "../../services/api";
 
 export function Form() {
-  const [userValue, setUserValue] = useState(0);
-  const [valueTax, setValueTax] = useState(0);
-  const [result, setResult] = useState(0);
-  const [convertedValueUSD_to_BRL, setConvertedValueUSD_to_BRL] = useState("");
+  const [convertedValueUSDToBRL, setConvertedValueUSDToBRL] = useState(""); // Valor convertido de USD para BRL
+  const [userValueDollar, setUserValueDollar] = useState(0); // Valor inserido pelo usuário em dólares
+  const [userValueStateTax, setUserValueStateTax] = useState(0); // Imposto do estado inserido pelo usuário
+  const [resultUser, setResultUser] = useState(0); // Resultado do valor convertido para BRL pelo usuário
+  const [resultWithStateTax, setResultWithStateTax] = useState(0); // Resultado com o imposto do estado aplicado
+  const [totalAmount, setTotalAmount] = useState(0); // Total do valor convertido com imposto
 
   useEffect(() => {
     api
       .get("USD-BRL")
       .then((response) => {
-        setConvertedValueUSD_to_BRL(
-          parseFloat(response.data.USDBRL.ask).toFixed(2) // Pega o valor convertido de USD to BRL
+        setConvertedValueUSDToBRL(
+          parseFloat(response.data.USDBRL.ask).toFixed(2) // Pega o valor convertido de USD para BRL
         );
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [convertedValueUSD_to_BRL]);
+  }, [convertedValueUSDToBRL]);
 
+  //Usei o 'destruct' para pegar a função de 'evento' que eu precisava
   function calculate(event: { preventDefault: () => void }) {
-    event.preventDefault();
-    setResult(parseFloat(convertedValueUSD_to_BRL) * userValue);
+    event.preventDefault(); // Impede a atualização da página
+
+    const calculatedResultUser =
+      parseFloat(convertedValueUSDToBRL) * userValueDollar;
+
+    const calculatedResultWithStateTax = parseFloat(
+      calculateStateTax(calculatedResultUser, userValueStateTax).toFixed(2)
+    );
+
+    const calculatedTotalAmount =
+      calculatedResultUser + calculatedResultWithStateTax;
+
+    setResultUser(calculatedResultUser);
+    setResultWithStateTax(calculatedResultWithStateTax);
+    setTotalAmount(calculatedTotalAmount);
   }
 
-  function total(value1: number, value2: number) {
+  // Função para calcular o valor do imposto do estado sob o valor convertido do dolar para BRL setado pelo usuario
+  function calculateStateTax(value1: number, value2: number) {
     return (value1 * value2) / 100;
   }
-  let resultadoComPorcentagem = total(result, valueTax).toFixed(2);
+
   return (
     <form onSubmit={calculate} className="mt-28 mb-28">
       <section className="flex gap-6">
         <InputData
           nome="Dólar"
           placeholder="$ 1,00"
-          onChange={(e) => setUserValue(parseFloat(e.target.value))}
+          onChange={(e) => setUserValueDollar(parseFloat(e.target.value))}
         />
         <InputData
-          nome="Taxa do estado"
+          nome="Imposto do estado"
           placeholder="%"
-          onChange={(e) => setValueTax(parseFloat(e.target.value))}
+          onChange={(e) => setUserValueStateTax(parseFloat(e.target.value))}
         />
-        <div>
-          {result}
-          |||
-          {resultadoComPorcentagem}
-        </div>
+        <div>{totalAmount}</div>
       </section>
       <section className="mt-8">
         <h2 className="text-lg mb-4">Tipo de compra</h2>
