@@ -28,7 +28,8 @@ export function Form() {
   //Usei o 'destruct' para pegar a função de 'evento' que eu precisava
   function calculate(event: { preventDefault: () => void }) {
     event.preventDefault(); // Impede a atualização da página
-
+    resultUser;
+    resultWithStateTax;
     const calculatedResultUser =
       parseFloat(convertedValueUSDToBRL) * userValueDollar;
 
