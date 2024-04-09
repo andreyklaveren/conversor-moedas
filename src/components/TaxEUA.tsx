@@ -31,10 +31,7 @@ function TaxasPorEstado(props: TaxaProps) {
 export function TaxEUA() {
   return (
     <div className="mt-[60px] p-2 max-h-72 text-white border-2 rounded-lg bg-[#00AB63] border-[#008B57]">
-      <TaxasPorEstado
-        titulo="Principais taxas de cidades dos EUA"
-        taxas={mainTax}
-      />
+      <TaxasPorEstado titulo="Principais taxas dos EUA" taxas={mainTax} />
     </div>
   );
 }

@@ -12,7 +12,7 @@ export function InputData(props: InputProps) {
       <input
         {...props}
         className="w-44 p-4 focus:outline-none border border-[#D7E0EB]  rounded drop-shadow-xl"
-        type="number"
+        type="text"
         placeholder={props.placeholder}
         onChange={props.onChange}
       />

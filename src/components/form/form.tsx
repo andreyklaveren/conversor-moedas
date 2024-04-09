@@ -22,10 +22,16 @@ export function Form() {
         console.log(error);
       });
   }, [convertedValueUSD_to_BRL]);
+
   function calculate(event: { preventDefault: () => void }) {
     event.preventDefault();
     setResult(parseFloat(convertedValueUSD_to_BRL) * userValue);
   }
+
+  function total(value1: number, value2: number) {
+    return (value1 * value2) / 100;
+  }
+  let resultadoComPorcentagem = total(result, valueTax).toFixed(2);
   return (
     <form onSubmit={calculate} className="mt-28 mb-28">
       <section className="flex gap-6">
@@ -39,6 +45,11 @@ export function Form() {
           placeholder="%"
           onChange={(e) => setValueTax(parseFloat(e.target.value))}
         />
+        <div>
+          {result}
+          |||
+          {resultadoComPorcentagem}
+        </div>
       </section>
       <section className="mt-8">
         <h2 className="text-lg mb-4">Tipo de compra</h2>
