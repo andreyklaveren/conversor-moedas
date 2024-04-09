@@ -5,11 +5,15 @@ import { InputRadio } from "./InputRadio";
 import { api } from "../../services/api";
 
 export function Form() {
-  const [convertedValueUSDToBRL, setConvertedValueUSDToBRL] = useState(""); // Valor convertido de USD para BRL
+  const [convertedValueUSDToBRL, setConvertedValueUSDToBRL] = useState(""); // Valor convertido de USD para BRL vindo da API
+  //Valores definidos pelo usuário
   const [userValueDollar, setUserValueDollar] = useState(0); // Valor inserido pelo usuário em dólares
   const [userValueStateTax, setUserValueStateTax] = useState(0); // Imposto do estado inserido pelo usuário
+  //Valor escolhido pelo usario no input type radio
+  const [selectedOption, setSelectedOption] = useState("");
   const [resultUser, setResultUser] = useState(0); // Resultado do valor convertido para BRL pelo usuário
   const [resultWithStateTax, setResultWithStateTax] = useState(0); // Resultado com o imposto do estado aplicado
+  //Valor total do calculo
   const [totalAmount, setTotalAmount] = useState(0); // Total do valor convertido com imposto
 
   useEffect(() => {
@@ -45,11 +49,12 @@ export function Form() {
     setTotalAmount(calculatedTotalAmount);
   }
 
-  // Função para calcular o valor do imposto do estado sob o valor convertido do dolar para BRL setado pelo usuario
+  // Função para calcular porcentagem
   function calculateStateTax(value1: number, value2: number) {
     return (value1 * value2) / 100;
   }
-
+  if (selectedOption === "dinheiro") {
+  }
   return (
     <form onSubmit={calculate} className="mt-28 mb-28">
       <section className="flex gap-6">
@@ -70,9 +75,20 @@ export function Form() {
       <section className="mt-8">
         <h2 className="text-lg mb-4">Tipo de compra</h2>
         <div className="flex gap-4">
-          <InputRadio name="Dinheiro" metodoPagamento="Dinheiro" />
-          <InputRadio name="Cartao" metodoPagamento="Cartão" />
+          <InputRadio
+            onChange={(e) => setSelectedOption(e.target.value)}
+            name="formaDePagamento"
+            value="dinheiro"
+            metodoPagamento="Dinheiro"
+          />
+          <InputRadio
+            onChange={(e) => setSelectedOption(e.target.value)}
+            name="formaDePagamento"
+            value="cartao"
+            metodoPagamento="Cartão"
+          />
         </div>
+        <div>{selectedOption}</div>
       </section>
       <ConvertBtn type="submit" />
     </form>
