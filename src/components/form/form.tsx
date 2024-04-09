@@ -55,11 +55,13 @@ export function Form() {
         <InputData
           nome="Dólar"
           placeholder="$ 1,00"
+          required
           onChange={(e) => setUserValueDollar(parseFloat(e.target.value))}
         />
         <InputData
           nome="Imposto do estado"
           placeholder="%"
+          required
           onChange={(e) => setUserValueStateTax(parseFloat(e.target.value))}
         />
         <div>{totalAmount}</div>
