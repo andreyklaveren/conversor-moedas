@@ -15,7 +15,7 @@ export function Form() {
   const [resultWithStateTax, setResultWithStateTax] = useState(0); // Resultado com o imposto do estado aplicado
   //Valor total do calculo
   const [totalAmount, setTotalAmount] = useState(0); // Total do valor convertido com imposto
-
+  const [finalValue, setFinalValue] = useState(0); // State for final value
   useEffect(() => {
     api
       .get("USD-BRL")
@@ -38,22 +38,25 @@ export function Form() {
       parseFloat(convertedValueUSDToBRL) * userValueDollar;
 
     const calculatedResultWithStateTax = parseFloat(
-      calculateStateTax(calculatedResultUser, userValueStateTax).toFixed(2)
+      calculatePercent(calculatedResultUser, userValueStateTax).toFixed(2)
     );
 
     const calculatedTotalAmount =
       calculatedResultUser + calculatedResultWithStateTax;
 
+    const calculatedFinalValue =
+      calculatePercent(totalAmount, selectedOption === "dinheiro" ? 1.1 : 6.4) +
+      totalAmount;
+
     setResultUser(calculatedResultUser);
     setResultWithStateTax(calculatedResultWithStateTax);
     setTotalAmount(calculatedTotalAmount);
+    setFinalValue(calculatedFinalValue);
   }
 
   // Função para calcular porcentagem
-  function calculateStateTax(value1: number, value2: number) {
+  function calculatePercent(value1: number, value2: number) {
     return (value1 * value2) / 100;
-  }
-  if (selectedOption === "dinheiro") {
   }
   return (
     <form onSubmit={calculate} className="mt-28 mb-28">
@@ -88,7 +91,7 @@ export function Form() {
             metodoPagamento="Cartão"
           />
         </div>
-        <div>{selectedOption}</div>
+        <div>{finalValue.toFixed(2)}</div>
       </section>
       <ConvertBtn type="submit" />
     </form>
