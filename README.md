@@ -34,7 +34,3 @@ No terminal, navegue até o diretório do projeto.
 Execute npm install para instalar as dependências.
 Execute npm start para iniciar o aplicativo.
 O aplicativo será aberto em seu navegador padrão.
-
-## Autor
-
-Este projeto foi desenvolvido por Andrey. Se você tiver alguma dúvida ou sugestão, sinta-se à vontade para entrar em contato.
