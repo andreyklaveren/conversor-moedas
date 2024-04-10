@@ -1,6 +1,7 @@
 import { Header } from "./components/Header";
 import { CurrencyConverter } from "./components/form/CurrencyConverter";
 import bg from "./assets/Mask-min.webp";
+import { TaxEUA } from "./components/TaxEUA";
 
 export function App() {
   return (
@@ -14,6 +15,7 @@ export function App() {
     >
       <Header />
       <CurrencyConverter />
+      <TaxEUA />
     </div>
   );
 }
