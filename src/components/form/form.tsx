@@ -6,17 +6,17 @@ import { api } from "../../services/api";
 import ArrowLeft from "../../assets/arrow-left.svg";
 export function Form() {
   const [convertedValueUSDToBRL, setConvertedValueUSDToBRL] = useState(""); // Valor convertido de USD para BRL vindo da API
-  //Valores definidos pelo usuário
-  const [userValueDollar, setUserValueDollar] = useState(0); // Valor inserido pelo usuário em dólares
+
+  const [userValueDollar, setUserValueDollar] = useState(0); // Valor inserido pelo usuário em dólar
   const [userValueStateTax, setUserValueStateTax] = useState(0); // Imposto do estado inserido pelo usuário
-  //Valor escolhido pelo usario no input type radio
-  const [selectedOption, setSelectedOption] = useState("");
-  const [resultUser, setResultUser] = useState(0); // Resultado do valor convertido para BRL pelo usuário
-  const [resultWithStateTax, setResultWithStateTax] = useState(0); // Resultado com o imposto do estado aplicado
-  //Valor total do calculo
-  const [totalAmount, setTotalAmount] = useState(0); // Total do valor convertido com imposto
-  const [finalValue, setFinalValue] = useState(0); // State for final value
-  const [showResult, setShowResult] = useState(false);
+
+  const [selectedOption, setSelectedOption] = useState(""); //Valor escolhido pelo usario no input type radio
+
+  const [totalAmount, setTotalAmount] = useState(0); // Total do valor digitado pelo usuário com imposto do estado
+  const [finalValue, setFinalValue] = useState(0); // Valor final com calculo do imposto digitado pelo usuário e se foi comprado com dinheiro ou cartão
+
+  const [showResult, setShowResult] = useState(false); // Switch entre o formulário e o resultado
+
   useEffect(() => {
     api
       .get("USD-BRL")
@@ -45,23 +45,13 @@ export function Form() {
     const calculatedTotalAmount =
       calculatedResultUser + calculatedResultWithStateTax;
 
-    setFinalValue(
-      calculatePercent(totalAmount, selectedOption === "dinheiro" ? 1.1 : 6.4) +
-        totalAmount
-    );
-
     // Atualize os estados com os resultados dos cálculos
-    setResultUser(calculatedResultUser);
-    setResultWithStateTax(calculatedResultWithStateTax);
     setTotalAmount(calculatedTotalAmount);
 
     // Exiba a seção de resultados
     setShowResult(true);
   }
-  // Função para calcular porcentagem
-  function calculatePercent(value1: number, value2: number) {
-    return (value1 * value2) / 100;
-  }
+
   useEffect(() => {
     setFinalValue(
       calculatePercent(totalAmount, selectedOption === "dinheiro" ? 1.1 : 6.4) +
@@ -69,6 +59,10 @@ export function Form() {
     );
   }, [totalAmount, selectedOption]);
 
+  // Função para calcular porcentagem
+  function calculatePercent(value1: number, value2: number) {
+    return (value1 * value2) / 100;
+  }
   return (
     <>
       <form
